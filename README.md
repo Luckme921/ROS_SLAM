@@ -9,7 +9,7 @@
 - IMU：轮趣科技N100
 - 语音模块：亚博智能Cl1302
 - 小车底盘：轮趣科技L150 PRO麦轮(已含STM32及驱动)
-- 注：以上硬件设备不满足可修改代码进行微调替换，用MobaXterm进行ssh连接树莓派4B，win下的cmd或powershell等终端工具无法返回vscode或rviz图像，高性能设备可自行配置VNC服务器进行远程连接。
+- 注：以上硬件设备不满足可修改代码进行微调替换，用MobaXterm进行ssh连接树莓派4B，win下的cmd或powershell等终端ssh工具无法返回vscode或rviz图像，高性能设备可自行配置VNC服务器进行远程连接。
 ### 2.2安装依赖与编译项目
 本项目依赖较多，若在安装过程中遇到问题，请在B站视频下方留言(以下串口均为绝对ID，无需担心串口插拔顺序问题，自行保证串口读写权限，加入到dialout组)。
 1. 雷达：A2M12 (注意安装方向)
@@ -19,22 +19,22 @@ ls /dev/serial/by-id/
 - 看到雷达设备ID后，修改radar_ws下的src/launch/view_rplidar_a2m12_launch.py文件和rplidar_a2m12_launch.py文件，将其中的/dev/ttyUSB0修改为/dev/serial/by-id/你的雷达设备ID
 - 执行以下命令编译运行项目
 ```bash
-cd ~/all/radar_ws
+cd ~/ROS_SLAM/radar_ws
 colcon build --symlink-install
-echo "source ~/all/radar_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/radar_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
-cd ~/all
+cd ~/ROS_SLAM
 sudo cp -r rplidar.rules /etc/udev/rules.d/
 ros2 launch rplidar_ros view_rplidar_a2m12_launch.py
 ```
-2. URDF模型(all文件下的陀螺仪转接件STL，需自行3D打印制作)  
+2. URDF模型(ROS_SLAM文件下的陀螺仪转接件STL，需自行3D打印制作)  
 - urdf_mac_ws/src/urdf_show/meshes为SW生成的STL文件，meshes同级config_rviz为rviz默认配置文件保存路径
 ```bash
 sudo apt install ros-humble-robot-state-publisher -y
 sudo apt install ros-humble-joint-state-publisher -y
-cd ~/all/urdf_mac_ws
+cd ~/ROS_SLAM/urdf_mac_ws
 colcon build --symlink-install
-echo "source ~/all/urdf_mac_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/urdf_mac_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
 ros2 launch urdf_show robot_display_launch.py
 ros2 launch urdf_show robot_with_lidar_launch.py
@@ -47,18 +47,18 @@ ls /dev/serial/by-id/
 - 看到IMU设备ID后，修改imu_ws下的src/imu_driver/imu_driver/imu_node.py文件，将其中的/dev/ttyUSB0修改为/dev/serial/by-id/你的IMU设备ID
 - 执行以下命令编译运行项目
 ```bash
-cd ~/all/imu_ws
+cd ~/ROS_SLAM/imu_ws
 colcon build --symlink-install
-echo "source ~/all/imu_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/imu_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
 ros2 run imu_driver imu_driver_node
 ros2 topic echo /imu/data_raw
 ```
 - 请提前安装imu_node.py中python依赖,之后打开新的终端，编译官方imu_tools_catkin_ws下的代码
 ```bash
-cd ~/all/imu_tools_catkin_ws
+cd ~/ROS_SLAM/imu_tools_catkin_ws
 colcon build
-echo "source ~/all/imu_tools_catkin_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/imu_tools_catkin_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
 ros2 launch imu_tools imu_tools_launch.py
 ros2 launch imu_complementary_filter complementary_filter.launch
@@ -67,7 +67,7 @@ ros2 topic echo /imu/data
 - 即可看到经过官方imu_tools滤波后的IMU数据
 - 以下为编写IMU开机自启脚本，使用者也可自行在launch文件中添加IMU节点，跳过此步骤
 ```bash
-cd ~/all/imu_ws
+cd ~/ROS_SLAM/imu_ws
 touch run_imu_node.sh
 nano run_imu_node.sh
 ```
@@ -79,7 +79,7 @@ sleep 5
 # 加载ROS2基础环境
 source /opt/ros/humble/setup.bash
 # source工作空间
-source /home/pi/all/imu_ws/install/setup.bash
+source /home/pi/ROS_SLAM/imu_ws/install/setup.bash
 # 运行IMU节点
 ros2 run imu_driver imu_node > /home/pi/imu_node.log 2>&1
 ```
@@ -98,8 +98,8 @@ Wants=network.target
 [Service]
 Type=simple
 User=pi（根据实际用户名修改）
-WorkingDirectory=/home/用户名/all/imu_ws
-ExecStart=/home/用户名/all/imu_ws/run_imu_node.sh
+WorkingDirectory=/home/用户名/ROS_SLAM/imu_ws
+ExecStart=/home/用户名/ROS_SLAM/imu_ws/run_imu_node.sh
 Restart=on-failure
 RestartSec=5
 
@@ -125,9 +125,9 @@ ls /dev/serial/by-id/
 - 看到Cl1302设备ID后，修改mc_ws下的src/mc_chassis/mc_chassis/sound_node.py文件，将其中的/dev/ttyUSB0修改为/dev/serial/by-id/你的Cl1302设备ID  
 - 修改launch文件夹下的两个文件（区别在有无rviz显示），保证你的串口设备ID与imu_tools滤波的launch启动路径正确（用户也可自行修改代码用其他启动逻辑）
 ```bash
-cd ~/all/mc_ws
+cd ~/ROS_SLAM/mc_ws
 colcon build --symlink-install
-echo "source ~/all/mc_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/mc_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
 ```
 - 这个launch文件会启动STM32串口通信节点、语音模块节点、IMU滤波节点、雷达节点、URDF模型显示节点等。原IMU节点开机自动启动，无需额外操作
@@ -147,14 +147,14 @@ ros2 run mc_chassis sound_vel.py
 - slam_nv2下的config文件夹为控制器和规划器等参数的配置文件，maps下为地图文件，params.yaml为建图参数配置文件(默认不带IMU建图，若要带IMU建图，可选lds_2dcopy.lua文件作为cartographer启动launch的选择文件)。launch下cartographer_launch为建图启动文件，会接收/scan、/imu/data、/odom话题数据，发布/map等话题
 - 首先编译工程，安装Cartographer
 ```bash
-cd ~/all/learn_pluginlin
+cd ~/ROS_SLAM/learn_pluginlin
 sudo apt install ros-humble-pluginlib -y
 colcon build --symlink-install
 source install/setup.bash
 ros2 run motion_control_system test_plugin motion_control_system/SpinMotionController
-cd ~/all/slam_nv2_ws
+cd ~/ROS_SLAM/slam_nv2_ws
 colcon build --symlink-install
-echo "source ~/all/slam_nv2_ws/install/setup.bash --extend" >> ~/.bashrc
+echo "source ~/ROS_SLAM/slam_nv2_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
 wget http://fishros.com/install -O fishros && . fishros
 ```
@@ -175,7 +175,7 @@ ros2 run mc_chassis cmd_vel_keyboard.py
 - 安装地图保存插件nav2_map_server:
 ```bash
 sudo apt install ros-humble-nav2-map-server -y
-ros2 run nav2_map_server map_saver_cli -f ~/all/slam_nv2_ws/src/slam_nav2/maps/room1
+ros2 run nav2_map_server map_saver_cli -f ~/ROS_SLAM/slam_nv2_ws/src/slam_nav2/maps/room1
 ```
 - 安装nav2启动实例功能包nav2_bringup:
 ```bash
@@ -218,5 +218,9 @@ H: 左前进45°（只在移动模式下有效）
 执行动作  设置速度为xxxx mm/s（例如{01000}表示1000mm/s）
 ```
 - 注意：设置目标速度时、加减速度XY指令发送时，小车会暂停。频繁设置速度或加减速会导致小车卡顿，下发的cmd_vel速度数据会被底盘控制节点速度过滤：速度波动5mm/s不执行加减速指令或速度设置指令，可在代码中更改过滤参数
+### 2.3实物图片
+- 正上  
+  <img src="image/小车实物图1.jpg" width="600" />
+  <img src="image/小车实物图2.jpg" width="600" />
 ## 3.作者
-- [Luckme921](https://github.com/Luckme921)# -ROS2-SLAM-
+- [Luckme921](https://github.com/Luckme921)
