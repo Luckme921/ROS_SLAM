@@ -1,0 +1,23 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"imu_Link" [label="imu_Link"];
+"lidar_Link" [label="lidar_Link"];
+"wheel_lb_Link" [label="wheel_lb_Link"];
+"wheel_lf_Link" [label="wheel_lf_Link"];
+"wheel_rb_Link" [label="wheel_rb_Link"];
+"wheel_rf_Link" [label="wheel_rf_Link"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "imu_jiont" [label="xyz: 0.08633 -0.00081207 0.059 \nrpy: 0 -0 0"]
+"imu_jiont" -> "imu_Link"
+"base_link" -> "lidar_jiont" [label="xyz: 0.031473 -0.00081141 0.0916 \nrpy: 0 -0 0"]
+"lidar_jiont" -> "lidar_Link"
+"base_link" -> "wheel_lb_jiont" [label="xyz: -0.093167 0.11419 -0.0343 \nrpy: 0 -0 0"]
+"wheel_lb_jiont" -> "wheel_lb_Link"
+"base_link" -> "wheel_lf_jiont" [label="xyz: 0.078733 0.11419 -0.0343 \nrpy: 0 -0 0"]
+"wheel_lf_jiont" -> "wheel_lf_Link"
+"base_link" -> "wheel_rb_jiont" [label="xyz: -0.093171 -0.11581 -0.0343 \nrpy: 0 -0 0"]
+"wheel_rb_jiont" -> "wheel_rb_Link"
+"base_link" -> "wheel_rf_jiont" [label="xyz: 0.078729 -0.11581 -0.0343 \nrpy: 0 -0 0"]
+"wheel_rf_jiont" -> "wheel_rf_Link"
+}
