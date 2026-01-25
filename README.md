@@ -11,7 +11,11 @@
 - 小车底盘：轮趣科技L150 PRO麦轮(已含STM32及驱动)
 - 注：以上硬件设备不满足可修改代码进行微调替换，用MobaXterm进行ssh连接树莓派4B，win下的cmd或powershell等终端ssh工具无法返回vscode或rviz图像，高性能设备可自行配置VNC服务器进行远程连接。
 ### 2.2安装依赖与编译项目
-本项目依赖较多，若在安装过程中遇到问题，请在B站视频下方留言(以下串口均为绝对ID，无需担心串口插拔顺序问题，自行保证串口读写权限，加入到dialout组)。
+本项目依赖较多，若在安装过程中遇到问题，请在B站视频下方留言(以下串口均为绝对ID，无需担心串口插拔顺序问题，自行保证串口读写权限，加入到dialout组)。  
+```bash
+cd ~ && mkdir ROS_SLAM && cd ./ROS_SLAM
+git clone git@github.com:Luckme921/ROS_SLAM.git
+```
 1. 雷达：A2M12 (注意安装方向)
 ```bash
 ls /dev/serial/by-id/
