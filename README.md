@@ -64,7 +64,6 @@ cd ~/ROS_SLAM/imu_tools_catkin_ws
 colcon build
 echo "source ~/ROS_SLAM/imu_tools_catkin_ws/install/setup.bash --extend" >> ~/.bashrc
 source ~/.bashrc
-ros2 launch imu_tools imu_tools_launch.py
 ros2 launch imu_complementary_filter complementary_filter.launch
 ros2 topic echo /imu/data
 ```
