@@ -67,7 +67,7 @@ source ~/.bashrc
 ros2 launch imu_complementary_filter complementary_filter.launch
 ros2 topic echo /imu/data
 ```
-- 即可看到经过官方imu_tools滤波后的IMU数据
+- 即可看到经过imu_tools滤波后的IMU数据，参考网址：[imu_tools](https://github.com/CCNYRoboticsLab/imu_tools)
 - 以下为编写IMU开机自启脚本，使用者也可自行在launch文件中添加IMU节点，跳过此步骤
 ```bash
 cd ~/ROS_SLAM/imu_ws
