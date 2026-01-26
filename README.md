@@ -60,6 +60,7 @@ ros2 topic echo /imu/data_raw
 ```
 - 请提前安装imu_node.py中python依赖,之后打开新的终端，编译官方imu_tools_catkin_ws下的代码
 ```bash
+sudo apt-get install ros-<你的ros版本>-imu-tools
 cd ~/ROS_SLAM/imu_tools_catkin_ws
 colcon build
 echo "source ~/ROS_SLAM/imu_tools_catkin_ws/install/setup.bash --extend" >> ~/.bashrc
