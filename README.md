@@ -88,7 +88,7 @@ ros2 run imu_driver imu_node > /home/pi/imu_node.log 2>&1
 ```
 - 后添加执行权限，并创建服务文件
 ```bash
-chmod +x ./run_imu_node.sh
+sudo chmod +x ./run_imu_node.sh
 sudo nano /etc/systemd/system/imu_node.service
 ```
 - 复制以下内容到imu_node.service文件中
