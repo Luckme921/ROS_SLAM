@@ -3,7 +3,7 @@
 本项目适合新手动手实现SLAM建图和导航功能，基于鱼香ROS的学习视频，在第六章或第七章同步学习中，可根据本项目进行实践，会加速你对ROS2框架与导航实践的理解和应用。
 ## 2.使用说明
 可结合本人blibli此系列视频进行操作，视频链接：[14天怒搓SLAM导航小车](https://www.bilibili.com/video/BV1s2zMBhE6D?vd_source=956043e91d9fa045c1e7c746411b5102)
-### 2.1所需硬件
+### 2.1⚙️所需硬件
 - 主控：树莓派4B（建议8GB以上内存或高性能兼容ROS2的设备）
 - 雷达：思岚A2M12
 - IMU：轮趣科技N100
@@ -11,12 +11,22 @@
 - 小车底盘：轮趣科技L150 PRO麦轮(已含STM32及驱动)
 - 注：以上硬件设备不满足可修改代码进行微调替换，用MobaXterm进行ssh连接树莓派4B，win下的cmd或powershell等终端ssh工具无法返回vscode或rviz图像，高性能设备可自行配置VNC服务器进行远程连接。
 ### 2.2安装依赖与编译项目
-本项目依赖较多，若在安装过程中遇到问题，请在B站视频下方留言(以下串口均为绝对ID，无需担心串口插拔顺序问题，自行保证串口读写权限，加入到dialout组)。  
+本项目依赖较多，若在安装过程中遇到问题，请在B站视频下方留言(**以下串口均为绝对ID，无需担心串口插拔顺序问题，自行保证串口读写权限，加入到dialout组**)。  
+
+| 文件夹📂📂📂 | 主要功能🔔🔔🔔 |
+|-----------|---------------|
+| mc_ws | 麦轮底盘控制系统 |  
+| radar_ws | 激光雷达驱动 |
+| urdf_mac_ws | 机器人URDF模型 |
+| imu_ws + imu_tools_catkin_ws | IMU传感器和滤波 |
+| slam_nv2_ws | SLAM建图和导航系统 |
+| stm32 | 底层硬件控制固件 |
+1. 克隆代码仓库
 ```bash
 cd ~ && mkdir ROS_SLAM && cd ./ROS_SLAM
 git clone git@github.com:Luckme921/ROS_SLAM.git
 ```
-1. 雷达：A2M12 (注意安装方向)
+2. 雷达：A2M12 (注意安装方向)
 ```bash
 ls /dev/serial/by-id/
 ```
@@ -31,7 +41,7 @@ cd ~/ROS_SLAM
 sudo cp -r rplidar.rules /etc/udev/rules.d/
 ros2 launch rplidar_ros view_rplidar_a2m12_launch.py
 ```
-2. URDF模型(ROS_SLAM文件下的陀螺仪转接件STL，需自行3D打印制作)  
+3. URDF模型(ROS_SLAM文件下的陀螺仪转接件STL，需自行3D打印制作)  
 - urdf_mac_ws/src/urdf_show/meshes为SW生成的STL文件，meshes同级config_rviz为rviz默认配置文件保存路径
 ```bash
 sudo apt install ros-humble-robot-state-publisher -y
@@ -43,7 +53,7 @@ source ~/.bashrc
 ros2 launch urdf_show robot_display_launch.py
 ros2 launch urdf_show robot_with_lidar_launch.py
 ```
-3. IMU：N100(注意安装方向)  
+4. IMU：N100(注意安装方向)  
 - 可根据N100资料，编写单个Python测试脚本，提前测试IMU数据读取与解析
 ```bash
 ls /dev/serial/by-id/
@@ -118,7 +128,7 @@ sudo systemctl start imu_node.service
 sudo systemctl status imu_node.service #确保输出服务状态为active（running）
 ros2 topic echo /imu/data_raw #查看IMU原始数据是否正常
 ```
-4. mc_ws重要代码文件  
+5. ⭐⭐⭐mc_ws重要代码文件📸  
 <img src="image/mc节点关系图.png" width="600" />
 
 - STM32串口1，语音模块Cl1302串口模式提前连接。
@@ -146,7 +156,7 @@ ros2 run mc_chassis cmd_vel_keyboard.py
 ```bash
 ros2 run mc_chassis sound_vel.py
 ```
-5. slam_nv2_ws重要代码文件,主要流程可参考鱼香ROS2第7、8章节视频  
+6. ⭐⭐⭐slam_nv2_ws重要代码文件,主要流程可参考鱼香ROS2第7、8章节视频  
 - src文件夹下controller文件夹为自定义的控制节点，planner文件夹为自定义的规划节点
 - slam_nv2下的config文件夹为控制器和规划器等参数的配置文件，maps下为地图文件，params.yaml为建图参数配置文件(默认不带IMU建图，若要带IMU建图，可选lds_2dcopy.lua文件作为cartographer启动launch的选择文件)。launch下cartographer_launch为建图启动文件，会接收/scan、/imu/data、/odom话题数据，发布/map等话题
 - 首先编译工程，安装Cartographer
@@ -189,7 +199,7 @@ sudo apt install ros-humble-nav2-bringup -y
 ```bash
 ros2 launch slam_nav2 slam_nv2_launch.py
 ```
-6. stm32.zip
+7. stm32.zip
 - 包含STM32代码，需先烧录，stm32/a/OBJ/WHEELTEC.hex，后可正确运动，否则小车无反应
 - stm32发送数据格式：
 ```
@@ -222,9 +232,9 @@ H: 左前进45°（只在移动模式下有效）
 执行动作  设置速度为xxxx mm/s（例如{01000}表示1000mm/s）
 ```
 - 注意：设置目标速度时、加减速度XY指令发送时，小车会暂停。频繁设置速度或加减速会导致小车卡顿，下发的cmd_vel速度数据会被底盘控制节点速度过滤：速度波动5mm/s不执行加减速指令或速度设置指令，可在代码中更改过滤参数
-### 2.3实物图片
+### 2.3实物图片📸 📸 
 - 正上  
   <img src="image/小车实物图1.jpg" width="600" />
   <img src="image/小车实物图2.jpg" width="600" />
-## 3.作者
+## 3.📩作者
 - [Luckme921](https://github.com/Luckme921)
