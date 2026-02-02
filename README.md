@@ -200,7 +200,8 @@ sudo apt install ros-humble-nav2-bringup -y
 ros2 launch slam_nav2 slam_nv2_launch.py
 ```
 - TF树可视化  
-<img src="image/tf_tree.png" width="1500" />
+<img src="image/tf_tree.png" width="1500" />  
+
 7. stm32.zip
 - 包含STM32代码，需先烧录，stm32/a/OBJ/WHEELTEC.hex，后可正确运动，否则小车无反应
 - stm32发送数据格式：
