@@ -23,8 +23,7 @@
 | stm32 | 底层硬件控制固件 |
 1. 克隆代码仓库
 ```bash
-cd ~ && mkdir ROS_SLAM && cd ./ROS_SLAM
-git clone git@github.com:Luckme921/ROS_SLAM.git
+cd ~ && git clone git@github.com:Luckme921/ROS_SLAM.git
 ```
 2. 雷达：A2M12 (注意安装方向)
 ```bash
@@ -241,4 +240,5 @@ H: 左前进45°（只在移动模式下有效）
   <img src="image/小车实物图2.jpg" width="600" />
 ## 3.📩作者
 - [Luckme921](https://github.com/Luckme921)
+
 - **邮箱**：1814313359@qq.com
