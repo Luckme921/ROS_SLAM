@@ -67,7 +67,7 @@ source ~/.bashrc
 ros2 run imu_driver imu_driver_node
 ros2 topic echo /imu/data_raw
 ```
-- 请提前安装imu_node.py中python依赖,之后打开新的终端，编译官方imu_tools_catkin_ws下的代码
+- 请提前安装imu_node.py中python依赖,之后打开新的终端，编译imu_tools_catkin_ws下的代码
 ```bash
 sudo apt-get install ros-<你的ros版本>-imu-tools
 cd ~/ROS_SLAM/imu_tools_catkin_ws
@@ -242,3 +242,4 @@ H: 左前进45°（只在移动模式下有效）
 - [Luckme921](https://github.com/Luckme921)
 
 - **邮箱**：1814313359@qq.com
+
