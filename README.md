@@ -196,7 +196,7 @@ sudo apt install ros-humble-nav2-bringup -y
 ```
 - 启动导航功能，以下launch会启动自定义导航控制规划节点、雷达、Rviz2可视化工具等，自定义规划控制算法更改可参考鱼香ROS第8章节视频
 ```bash
-ros2 launch slam_nav2 slam_nv2_launch.py
+ros2 launch slam_nav2 nav2.launch.py
 ```
 - TF树可视化  
 <img src="image/tf_tree.png" width="1500" />  
@@ -242,4 +242,5 @@ H: 左前进45°（只在移动模式下有效）
 - [Luckme921](https://github.com/Luckme921)
 
 - **邮箱**：1814313359@qq.com
+
 
