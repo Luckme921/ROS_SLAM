@@ -240,7 +240,9 @@ H: 左前进45°（只在移动模式下有效）
   <img src="image/小车实物图2.jpg" width="600" />
 ## 3.📩作者
 - [Luckme921](https://github.com/Luckme921)
+- [Cai-hb](https://github.com/Cai-hb)
 
 - **邮箱**：1814313359@qq.com
+- **邮箱**：110407641@qq.com
 
 
